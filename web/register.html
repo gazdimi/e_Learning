@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link href="./bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="./bootstrap/css/bootstrap-grid.css" rel="stylesheet">
+    <link href="./bootstrap/css/bootstrap-reboot.css" rel="stylesheet">
+    <style>
+        label.custom-control-label {
+            position: relative;
+            padding-right: 1.5rem;
+        }
+        label.custom-control-label::before, label.custom-control-label::after{
+            right: 0;
+            left: auto;
+        }
+        body {
+            background-image: url("background.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+<div class="container d-flex float-left" style="margin-top: 3%; margin-left: 3%">
+    <form action="/Register" method="post" class="text-center border border-light p-5 "> <!--badge-light-->
+        <p class="h4 mb-4">Sign up</p>
+        <label>Are you a Student or a Teacher?</label>
+        <div class="custom-control custom-radio custom-control-inline">
+            <input name="option" id="student" type="radio" onchange="if(this.checked){check_holder(1)}" class="custom-control-input" required>
+            <label class="custom-control-label" for="student">Student</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+            <input name="option" id="teacher" type="radio" onchange="if(this.checked){check_holder()}" class="custom-control-input">
+            <label class="custom-control-label" for="teacher">Teacher</label>
+        </div>
+        <br><br>
+        <div class="form-row">
+            <div class="col">
+                <input name ="uname" type="text" pattern="^[a-zA-Z]+$" class="form-control" placeholder="First name" title="First name will be used as username too" required>
+            </div>
+            <div class="col">
+                <input name ="surname" type="text" pattern="^[a-zA-Z]+$" class="form-control" placeholder="Last name" required>
+            </div>
+        </div>
+        <small class="form-text text-muted mb-4">
+            First name will be used as username too
+        </small>
+        <div class="form-row">
+            <div class="col">
+                <input id="pass" name ="pass" type="password" pattern="(?=.*[a-z])(?=.*[A-Z]).{4}" class="form-control" placeholder="Password"
+                       title="Must consist of 4 letters, read the text below" required>
+            </div>
+            <div class="col">
+                <input  id="conpass" name ="conpass" class="form-control" placeholder="Reenter Password" type="password" required>
+            </div>
+        </div>
+        <small class="form-text text-muted mb-5">
+            Must consist of 4 letters, 1st letter is the 1st character of your first name, 2nd letter is the first character of your last name,
+            <br>3rd letter is the first character of your father's name and 4th letter is the first character of your mother's name
+        </small>
+
+
+        <!-- Sign up button -->
+        <button id="registerButton" onclick="validation()" class="btn btn-info my-4 btn-block" type="submit">Sign in</button>
+
+        <hr>
+
+        <p>Do you already have an account?
+            <a href="index.html">Back to login</a>
+        </p>
+    </form>
+</div>
+<script>
+    var user_type = "";
+    function check_holder(X) {
+        if (X == 1){
+            document.getElementById("userid").placeholder = "Sxxxxx";
+            user_type = "S";
+        }else{
+            document.getElementById("userid").placeholder = "Txxxxx";
+            user_type = "T";
+        }
+    }
+    function check_id(){
+        var userid = document.getElementById("userid").value;
+        if(userid.charAt(0)!= user_type){
+            document.getElementById("userid").value = "";
+        }
+    }
+    var pass = document.getElementById("pass");
+    var conpass = document.getElementById("conpass");
+    function validation()
+    {
+        if(pass.value != conpass.value) {
+            conpass.setCustomValidity("Passwords don't match");
+            conpass.value = "";
+        } else {
+            conpass.setCustomValidity('');
+        }
+
+    }
+    pass.onchange = validation();
+    conpass.onkeyup = validation();
+</script>
+</body>
+</html>
