@@ -6,30 +6,46 @@
     <link href="./bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="./bootstrap/css/bootstrap-grid.css" rel="stylesheet">
     <link href="./bootstrap/css/bootstrap-reboot.css" rel="stylesheet">
-
+    <style>
+        .bg-image {
+            background-image: url("./img/login.jpg");
+            filter: blur(4px);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
-<body class="bg-dark">
+<body>
+<div class="bg-image"></div>
+
 <div class="container d-flex justify-content-center">
     <div class="pt-5 col-4 ">
-        <div class="card text-white bg-secondary border-primary" >
+        <div class="card text-white  border-light" style="width: 120%; margin-top: 18%; background-color: rgb(0,0,0); background-color: rgba(0,0,0, 0.4);" >
             <div class="card-body">
                 <form action="/Login" method="post">
+                    <p class="card-header mb-4 text-center text-light">Are you ready to learn multiplication from 1 to 10? Let's get started!</p>
+                    <p class="card-title h5 mb-4 text-center">Login</p>
+
                     <div class="form-group text-center">
-                        <label for="UserId" class="font-weight-bold h4" >User Id</label>
-                        <input name="userid" type="text" class="form-control text-center" id="UserId" maxlength="6" placeholder="Enter User Id" required>
+                        <input name="userid" type="text" title="Enter username" class="form-control text-center" id="UserId" placeholder="Username" required>
+                        <small class="form-text  mb-4 text-white">
+                            Remember username is your first name
+                        </small>
                     </div>
+
                     <div class="form-group text-center">
-                        <label for="password"class="font-weight-bold h4">Password</label>
-                        <input name="pass" type="password" class="form-control text-center" id="password" placeholder="Enter Password" required>
-                        <br>
-                        <button type="submit" class="btn btn-primary">Login</button>
+                        <input name="pass" type="password" title="Enter password" class="form-control text-center" id="password" placeholder="Password" required>
+                        <small class="form-text mb-5 text-white">Forgot your password?
+                            Back to <a style="color: #f3fa96" href="register.html">Register</a> to get bunny's help
+                        </small>
                     </div>
+
+                    <button type="submit" class="btn btn-info btn-block mb-4">Login</button>
                 </form>
-                <div class="text-center">
-                    <form action="register.html">
-                        <button type="submit" class="btn btn-primary ">Register</button>
-                    </form>
-                </div>
             </div>
         </div>
     </div>
