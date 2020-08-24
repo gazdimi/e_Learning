@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.security.*;
 import Classes.UserFactory;
 
@@ -35,23 +34,10 @@ public class RegisterServlet extends HttpServlet {
             UserFactory factory = new UserFactory();
             factory.UserIdentification(userid).register(userid, uname, surname, securePassword, salt);//User Factory Pattern
         } catch (Exception e){
-            PrintWriter out = response.getWriter();	//Print html
-            out.println("<!DOCTYPE html><html lang=\"en\">" +
-                    "<head><title>Registration failed</title><style>input[type=button]{margin:50px 42% auto;font-size:10pt;font-weight:bold;}" +
-                    "</style></head><body bgcolor = \"#f0f0f0\"><h1 align = \"center\">Registration failed</h1>\n" +
-                    "<h3 align=\"center\">Please try again later.</h3>"+
-                    "<input onclick=\"location.href='register.html'\" type=\"button\" value=\"GO_BACK_TO_REGISTER\">"+"</body></html>");
+            response.sendRedirect("failure.html");
             return;
         }
-
-        PrintWriter out = response.getWriter();
-        String title = "Registration";
-        out.println("<!DOCTYPE html><html lang=\"en\">" +
-                "<head><title>" + title + "</title><style>input[type=button]{margin:50px 42% auto;font-size:10pt;font-weight:bold;}" +
-                "</style></head><body bgcolor = \"#f0f0f0\"><h1 align = \"center\">" + title + "</h1>\n" +
-                "<h3 align=\"center\">Successfull registration!!!</h3>"+
-                "<input onclick=\"location.href='index.html'\" type=\"button\" value=\"Back to Login\">"+"</body></html>");
-
+        response.sendRedirect("success.html");
     }
 
     public static String SecurePassword(String pass,byte[] salt) {

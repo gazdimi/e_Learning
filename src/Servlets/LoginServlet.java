@@ -36,12 +36,12 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
                     RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/TeacherHomepage");
                     dispatcher.forward(request, response);
                 }else{
-                    response.sendRedirect("index.html");
+                    response.sendRedirect("login.html");
                     return;
                 }
             }
         }catch (Exception e){
-            response.sendRedirect("index.html");
+            response.sendRedirect("login.html");
             return;
         }
     }

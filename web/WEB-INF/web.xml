@@ -5,9 +5,9 @@
          version="4.0">
     <display-name>eLearning</display-name>
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-        <welcome-file>index.htm</welcome-file>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>login.html</welcome-file>
+        <welcome-file>login.htm</welcome-file>
+        <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
     <resource-ref>
         <description>Connection Pool</description>

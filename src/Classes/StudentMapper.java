@@ -11,14 +11,15 @@ public class StudentMapper implements User{
     public void register(String id,String name,String surname,String password,byte[] salt) throws SQLException {
         try{
             Dbconnector con = new Dbconnector();
-            PreparedStatement st = con.connect().prepareStatement("INSERT INTO students (student_id, teacher_id, theory_id,password,first_name,last_name,salt) VALUES(?,?,?,?,?,?,?);");
+            PreparedStatement st = con.connect().prepareStatement("INSERT INTO students (student_id, teacher_id, theory_id,password,first_name,last_name,salt,progress) VALUES(?,?,?,?,?,?,?,?);");
             st.setString(1, id);
-            st.setString(2, "");
+            st.setString(2, null);
             st.setString(3, "1");
             st.setString(4, password);
             st.setString(5, name);
             st.setString(6, surname);
             st.setBytes(7, salt);
+            st.setDouble(8, 0.0);
             st.executeUpdate();
             st.close();
             con.disconnect();
