@@ -14,7 +14,7 @@ public class StudentMapper implements User{
             PreparedStatement st = con.connect().prepareStatement("INSERT INTO students (student_id, teacher_id, theory_id,password,first_name,last_name,salt,progress) VALUES(?,?,?,?,?,?,?,?);");
             st.setString(1, id);
             st.setString(2, null);
-            st.setString(3, "1");
+            st.setString(3, "001");
             st.setString(4, password);
             st.setString(5, name);
             st.setString(6, surname);
@@ -29,7 +29,7 @@ public class StudentMapper implements User{
     }
 
     //Checks user information
-    public boolean login(String username,String password) throws SQLException {
+    public String login(String username,String password) throws SQLException {
         try{
             Dbconnector con = new Dbconnector();
             PreparedStatement sm = con.connect().prepareStatement("SELECT student_id, first_name, password, salt FROM students where first_name = ?;");
@@ -39,15 +39,16 @@ public class StudentMapper implements User{
                 byte[] salt = Rs1.getBytes("salt");
                 String securePassword = RegisterServlet.SecurePassword(password,salt);
                 if(username.equals(Rs1.getString("first_name"))&&securePassword.equals(Rs1.getString("password"))) {
+                    String id = Rs1.getString("student_id");
                     con.disconnect();
-                    return true;
+                    return id;
                 }
             }else{
-                return false;
+                return null;
             }
         }catch(Exception e){
             throw new SQLException("Incorrect credentials");
         }
-        return false;
+        return null;
     }
 }

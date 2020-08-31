@@ -25,15 +25,15 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
         try{
             //check for student login
             StudentMapper sm = new StudentMapper();
-            if(sm.login(username,pass)) {                                          //if student's credentials are correct
-                session.setAttribute("username", username);
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/StudentHomepage");
+            if(!sm.login(username,pass).isBlank() ) {                               //if student's credentials are correct
+                session.setAttribute("userid", sm.login(username,pass));
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/S_Welcome");
                 dispatcher.forward(request, response);
             }else {                                                                //if student doesn't exist check for teacher
                 TeacherMapper tm = new TeacherMapper();
-                if(tm.login(username,pass)) {                                      //if teacher's credentials are correct
-                    session.setAttribute("username", username);
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/TeacherHomepage");
+                if(!tm.login(username,pass).isBlank()) {                            //if teacher's credentials are correct
+                    session.setAttribute("userid", tm.login(username,pass));
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("T_Welcome");
                     dispatcher.forward(request, response);
                 }else{
                     response.sendRedirect("login.html");

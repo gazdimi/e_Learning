@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Student Homepage</title>
+        <link href="./bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="./bootstrap/css/bootstrap-grid.css" rel="stylesheet">
+        <link href="./bootstrap/css/bootstrap-reboot.css" rel="stylesheet">
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <style>
+            .sidenav {
+                height: 100%;
+                width: auto;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                background-color: #042611;
+                overflow-x: hidden;
+                padding-top: 20px;
+            }
+            .sidenav a {
+                padding: 6px 20px 6px 20px;
+                text-decoration: none;
+                font-size: 21px;
+                color: #5f6e62;
+                display: block;
+            }
+            .sidenav a:hover {
+                color: #edede4;
+            }
+        </style>
+    </head>
+    <body style="background: #FFEEEE;  /*for old browsers */
+    background: -webkit-linear-gradient(to right, #DDEFBB, #FFEEEE);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #DDEFBB, #FFEEEE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */">
+        <div class="sidenav">
+            <div class="accordion" id="accordion1">
+                <div id="heading1">
+                    <a class="card-title" href="#about" data-toggle="collapse" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">Profile Info</a>
+                </div>
+                <div id="collapse1" class="collapse container text-white" style="width: fit-content; background-color: #095426" aria-labelledby="headingOne" data-parent="#accordion1">
+                    <p class="card-text"><span class="glyphicon glyphicon-user"></span> Kostas Dimitrakopoulos</p>
+                    <p class="card-text">Current Section: <p>  Multiplication of 3</p></p>
+                    <p class="card-text">Progress: 40%</p>
+                </div>
+            </div>
+            <form method="post" action="/S_Welcome">
+                <a href="/Register">Home</a>
+                <a href="#contact">Contact</a>
+                <a href="#logout" onclick="$(this).closest('form').submit()">Logout</a>
+            </form>
+        </div>
+        <div class="progress" style="margin-top: 2%; height: 32px;">
+            <div class="progress-bar progress-bar-success font-weight-bolder" role="progressbar" aria-valuenow="40"
+                 aria-valuemin="0" aria-valuemax="100" style="width:40%; font-size: 16px">
+                Student's progress 40%
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="container d-flex" style="margin-left: 20%">
+                        <div class="shadow p-3 mb-5 bg-white rounded">
+                            <div class="card text-center " style="width: 45rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">Theory</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Sections</h6>
+                                    <div class = "col">
+                                        <form method="post" action="/Student_CourseHomepage">
+                                            <ul class="list-group list-group-flush">
+                                                <div class="accordion" id="accordionExample">
+                                                    <div id="headingOne">
+                                                        <button style="border-bottom: double;" class="list-group-item list-group-item-action" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                            Multiplication of 1
+                                                        </button>
+                                                    </div>
+                                                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                        <br>1 x 1 = 1<br>1 x 2 = 2<br>1 x 3 = 3<br>1 x 4 = 4<br>1 x 5 = 5<br>1 x 6 = 6<br>1 x 7 = 7<br>1 x 8 = 8<br>1 x 9 = 9<br>1 x 10 = 10
+                                                    </div>
+                                        <!--<input type="submit"  name="coursename" value="ΑΛΓΟΡΙΘΜΟΙ" class="list-group-item list-group-item-action">-->
+                                                    <div id="headingTwo">
+                                                        <button style="border-bottom: double;" class="list-group-item list-group-item-action"  type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                            Multiplication of 2
+                                                        </button>
+                                                    </div>
+                                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                                        <br>1 x 2 = 2<br>2 x 2 = 4<br>3 x 2 = 6<br>4 x 2 = 8<br>5 x 2 = 10<br>6 x 2 = 12<br>7 x 2 = 14<br>8 x 2 = 16<br>9 x 2 = 18<br>10 x 2 = 20
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        </form>
+                                        <br>
+                                        <form method="post" action="/StudentHomepage">
+                                            <input type="submit" id="log" value="Star the test" name="logout">
+                                        </form>
+                                        <!--<br>
+                                        <form method="post" action="/StudentHomepage">
+                                            <input type="submit" id="log" value="Logout" name="logout">
+                                        </form>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img src="./img/bugs.png" alt="Instructions"  width="400" height="600">
+                </div>
+            </div>
+        </div>
+        <script src="./bootstrap/js/bootstrap.bundle.js"></script>
+        <script src="./bootstrap/js/bootstrap.js"></script>
+    </body>
+</html>

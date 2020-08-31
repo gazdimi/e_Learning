@@ -25,7 +25,7 @@ public class TeacherMapper implements User{
         }
     }
 
-    public boolean login(String username,String password) throws SQLException {
+    public String login(String username,String password) throws SQLException {
         try{
             Dbconnector con = new Dbconnector();
             PreparedStatement s = con.connect().prepareStatement("SELECT teacher_id, password,first_name, salt FROM teachers where first_name = ?;");
@@ -35,15 +35,16 @@ public class TeacherMapper implements User{
                 byte[] salt = Rs1.getBytes("salt");
                 String securePassword = RegisterServlet.SecurePassword(password,salt);
                 if(username.equals(Rs1.getString("first_name"))&&securePassword.equals(Rs1.getString("password"))) {
+                    String id =  Rs1.getString("teacher_id");
                     con.disconnect();
-                    return true;
+                    return id;
                 }
             }else{
-                return false;
+                return null;
             }
         }catch(Exception e){
             throw new SQLException("Incorrect credentials");
         }
-        return false;
+        return null;
     }
 }
