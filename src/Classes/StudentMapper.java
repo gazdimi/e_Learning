@@ -51,4 +51,18 @@ public class StudentMapper implements User{
         }
         return null;
     }
+
+    //return student's information
+    public ResultSet get_info(String userid) throws SQLException{
+        try {
+            Dbconnector connector = new Dbconnector();
+            PreparedStatement st = connector.connect().prepareStatement("SELECT first_name, last_name, theory_id, progress FROM students WHERE students.student_id = ? ;");
+            st.setString(1, userid);
+            ResultSet rs = st.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            throw new SQLException("Could not get student's data.");
+
+        }
+    }
 }
