@@ -2,7 +2,6 @@ package Servlets;
 
 import Classes.StudentMapper;
 import Classes.TheoryMapper;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,12 +15,13 @@ import java.sql.ResultSet;
 @WebServlet(name = "S_WelcomeServlet",value ="/S_Welcome")
 public class S_WelcomeServlet extends HttpServlet {
 
+    static  String first_name = ""; static String last_name = ""; static String theory_id = ""; static int progress = 0;
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         response.setContentType("text/html; charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
-        HttpSession session=request.getSession();
 
         String userid = (String)request.getSession().getAttribute("userid");        //get user id from session
         PrintWriter out = response.getWriter();
@@ -49,12 +49,10 @@ public class S_WelcomeServlet extends HttpServlet {
             }
             StudentMapper s = new StudentMapper();
             ResultSet info = s.get_info(userid);
-            String first_name = ""; String last_name = ""; String theory_id = ""; int progress = 0;
             while (info.next()){
                 first_name = info.getString("first_name");
                 last_name = info.getString("last_name");
                 theory_id = info.getString("theory_id");
-                session.setAttribute("theory_id", theory_id);
                 progress = (int) ((info.getDouble("progress")*100)/10);
             }
             out.println( first_name + " " + last_name + "</p><p class=\"card-text\">Current Section: <p>  Multiplication of " + theory_id +
@@ -92,4 +90,5 @@ public class S_WelcomeServlet extends HttpServlet {
                     "<br>"+section_data+"</div></div>");
         }
     }
+
 }
