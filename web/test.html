@@ -20,16 +20,17 @@
                 overflow-x: hidden;
                 padding-top: 20px;
             }
-            .sidenav a {
+            .sidenav a, #logout_form {
                 padding: 6px 20px 6px 20px;
                 text-decoration: none;
                 font-size: 21px;
                 color: #5f6e62;
                 display: block;
             }
-            .sidenav a:hover {
+            .sidenav a:hover, #logout_form:hover {
                 color: #edede4;
             }
+
         </style>
     </head>
     <body style="background: #FFEEEE;  /*for old browsers */
@@ -49,7 +50,8 @@
             <form method="post" action="/S_Welcome">
                 <a href="/Register">Home</a>
                 <a href="#contact">Contact</a>
-                <a href="#logout" onclick="$(this).closest('form').submit()">Logout</a>
+                <a><input type="submit" value="Logout" name="logout" id="logout_form"  style="background:none; border-width:0px; padding-left: 0px;"></a>
+                <!--<a href="#logout" onclick="$(this).closest('form').submit()">Logout</a>-->
             </form>
         </div>
         <div class="progress" style="margin-top: 2%; height: 32px;">
@@ -106,7 +108,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <img src="./img/bugs.png" alt="Instructions"  width="400" height="600">
+                    <img src="img/bugs_bunny.png" alt="Instructions" width="400" height="600">
                 </div>
             </div>
         </div>
