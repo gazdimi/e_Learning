@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 
 @WebServlet(name = "TestServlet",value ="/Test")
@@ -21,12 +22,12 @@ public class TestServlet extends HttpServlet {
 
         String userid = (String)request.getSession().getAttribute("userid");        //get user id from session
         String theory_id = (String)request.getSession().getAttribute("theory_id");
+        PrintWriter out = response.getWriter();
         try{
             TestMapper test = new TestMapper();
             String href = test.get_test(theory_id);
-            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                Desktop.getDesktop().browse(new URI(href));
-            }
+            out.println("<!DOCTYPE html><html><head></head><body>\n" +
+                    "<script>window.open(\""+href+"\",\"_self\");</script></body></html>");
         }catch (Exception e){System.out.println(e);}
     }
 }
