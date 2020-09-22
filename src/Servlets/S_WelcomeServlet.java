@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -20,6 +21,7 @@ public class S_WelcomeServlet extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
+        HttpSession session=request.getSession();
 
         String userid = (String)request.getSession().getAttribute("userid");        //get user id from session
         PrintWriter out = response.getWriter();
@@ -52,6 +54,7 @@ public class S_WelcomeServlet extends HttpServlet {
                 first_name = info.getString("first_name");
                 last_name = info.getString("last_name");
                 theory_id = info.getString("theory_id");
+                session.setAttribute("theory_id", theory_id);
                 progress = (int) ((info.getDouble("progress")*100)/10);
             }
             out.println( first_name + " " + last_name + "</p><p class=\"card-text\">Current Section: <p>  Multiplication of " + theory_id +
@@ -62,7 +65,7 @@ public class S_WelcomeServlet extends HttpServlet {
                     "<div class=\"container\"><div class=\"row\"><div class=\"col-md-8\"><div class=\"container d-flex\" style=\"margin-left: 20%\">\n" +
                     "<div class=\"shadow p-3 mb-5 bg-white rounded\"><div class=\"card text-center \" style=\"width: 45rem;\"><div class=\"card-body\">\n" +
                     "<h5 class=\"card-title\">Theory</h5><h6 class=\"card-subtitle mb-2 text-muted\">Sections</h6><div class = \"col\">\n" +
-                    "<form method=\"post\" action=\"/Student_CourseHomepage\"><ul class=\"list-group list-group-flush\"><div class=\"accordion\" id=\"accordionExample\">");
+                    "<form><ul class=\"list-group list-group-flush\"><div class=\"accordion\" id=\"accordionExample\">");
 
             TheoryMapper t = new TheoryMapper();
             ResultSet theory = t.get_theory_(theory_id);
@@ -70,7 +73,7 @@ public class S_WelcomeServlet extends HttpServlet {
                 PrintSections(theory.getString("theory_id"), theory_id, theory.getString("section_data"), out);
             }
 
-            out.println("</ul></form><br><form method=\"post\" action=\"/StudentHomepage\"><input type=\"submit\" id=\"log\" value=\"Star the test\" name=\"logout\">\n" +
+            out.println("</ul></form><br><form method=\"post\" action=\"/Test\"><input type=\"submit\" value=\"Star the test\" name=\"test\">\n" +
                     "</form></div></div></div></div></div></div><div class=\"col-md-4\"><img src=\"./img/bugs_bunny.png\" alt=\"Instructions\"  width=\"400\" height=\"600\">\n" +
                     "</div></div></div><script src=\"./bootstrap/js/bootstrap.bundle.js\"></script>\n" +
                     "<script src=\"./bootstrap/js/bootstrap.js\"></script>/body></html>");
