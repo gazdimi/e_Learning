@@ -22,9 +22,9 @@ public class RegisterServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        String uname = request.getParameter("uname");           //get form inputs after submit
-        String surname = request.getParameter("surname");
-        String pass = request.getParameter("pass");
+        String uname = request.getParameter("uname").toLowerCase();           //get form inputs after submit
+        String surname = request.getParameter("surname").toLowerCase();
+        String pass = request.getParameter("pass").toLowerCase();
         String option = request.getParameter("option_type");
         String userid = option.concat(pass);
 

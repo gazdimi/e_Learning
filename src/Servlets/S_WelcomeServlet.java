@@ -34,19 +34,17 @@ public class S_WelcomeServlet extends HttpServlet {
                 "font-size: 21px; color: #5f6e62; display: block; } .sidenav a:hover { color: #edede4; } </style> </head>\n" +
                 "<body style=\"background: #FFEEEE;  /*for old browsers */ background: -webkit-linear-gradient(to right, #DDEFBB, #FFEEEE);  /* Chrome 10-25, Safari 5.1-6 */\n" +
                 "background: linear-gradient(to right, #DDEFBB, #FFEEEE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\">\n" +
-                "<div class=\"sidenav\"><div class=\"accordion\" id=\"accordion1\"><div id=\"heading1\">\n" +
-                "<a class=\"card-title\" href=\"#about\" data-toggle=\"collapse\" data-target=\"#collapse1\" aria-expanded=\"false\" aria-controls=\"collapse1\">Profile Info</a>\n" +
-                "</div><div id=\"collapse1\" class=\"collapse container text-white\" style=\"width: fit-content; background-color: #095426\" aria-labelledby=\"headingOne\" data-parent=\"#accordion1\">\n" +
-                "<p class=\"card-text\"><span class=\"glyphicon glyphicon-user\"></span> ");
-
+                "<div class=\"sidenav\"><div class=\"accordion\" id=\"accordion_menu\"><div id=\"heading_menu\">\n" +
+                "<a class=\"card-title\" href=\"#about\" data-toggle=\"collapse\" data-target=\"#collapse_menu\" aria-expanded=\"false\" aria-controls=\"collapse_menu\">Profile Info</a>\n" +
+                "</div><div id=\"collapse_menu\" class=\"collapse container text-white\" style=\"width: fit-content; background-color: #095426\" aria-labelledby=\"heading_menu\" data-parent=\"#accordion_menu\">\n" +
+                "<p class=\"card-text text-uppercase\"><span class=\"glyphicon glyphicon-user\"></span> ");
         try{
-            /*if(request.getParameter("logout")!=null) {
-
-                request.getSession().removeAttribute("username");
+            if(request.getParameter("logout")!=null) {
+                request.getSession().removeAttribute("userid");
                 request.getSession().invalidate();
                 response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-                response.sendRedirect("index.html");
-            }*/
+                response.sendRedirect("login.html");
+            }
             StudentMapper s = new StudentMapper();
             ResultSet info = s.get_info(userid);
             String first_name = ""; String last_name = ""; String theory_id = ""; int progress = 0;
@@ -55,11 +53,10 @@ public class S_WelcomeServlet extends HttpServlet {
                 last_name = info.getString("last_name");
                 theory_id = info.getString("theory_id");
                 progress = (int) ((info.getDouble("progress")*100)/10);
-
             }
             out.println( first_name + " " + last_name + "</p><p class=\"card-text\">Current Section: <p>  Multiplication of " + theory_id +
-                    "</p></p><p class=\"card-text\">Progress: " + progress + "%</p></div></div><form method=\"post\" action=\"/S_Welcome\"><a href=\"/Register\">Home</a>" +
-                    "<a href=\"#contact\">Contact</a><a href=\"#logout\" onclick=\"$(this).closest('form').submit()\">Logout</a></form></div>" +
+                    "</p></p><p class=\"card-text\">Progress: " + progress + "%</p></div></div><form method=\"post\" action=\"/S_Welcome\"><a href=\"contact.html\">Contact</a>" +
+                    "<a href=\"about.html\">About</a><a href=\"\" name=\"logout\" onclick=\"$(this).closest('form').submit()\">Logout</a></form></div>" +
                     "<div class=\"progress\" style=\"margin-top: 2%; height: 32px;\"><div class=\"progress-bar progress-bar-success font-weight-bolder\" role=\"progressbar\" aria-valuenow=\""+progress+"\""+
                     "aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:"+progress+"%; font-size: 16px\">Student's progress "+progress+"%</div></div>" +
                     "<div class=\"container\"><div class=\"row\"><div class=\"col-md-8\"><div class=\"container d-flex\" style=\"margin-left: 20%\">\n" +
@@ -77,7 +74,7 @@ public class S_WelcomeServlet extends HttpServlet {
                     "</form></div></div></div></div></div></div><div class=\"col-md-4\"><img src=\"./img/bugs.png\" alt=\"Instructions\"  width=\"400\" height=\"600\">\n" +
                     "</div></div></div><script src=\"./bootstrap/js/bootstrap.bundle.js\"></script>\n" +
                     "<script src=\"./bootstrap/js/bootstrap.js\"></script>/body></html>");
-        }
+            }
         catch(Exception e){ System.out.println(e);}
     }
     protected void PrintSections(String theory_id, String s_theory_id, String section_data, PrintWriter out) {

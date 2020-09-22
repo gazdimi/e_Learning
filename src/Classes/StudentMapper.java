@@ -14,7 +14,7 @@ public class StudentMapper implements User{
             PreparedStatement st = con.connect().prepareStatement("INSERT INTO students (student_id, teacher_id, theory_id,password,first_name,last_name,salt,progress) VALUES(?,?,?,?,?,?,?,?);");
             st.setString(1, id);
             st.setString(2, null);
-            st.setString(3, "001");
+            st.setString(3, "1");
             st.setString(4, password);
             st.setString(5, name);
             st.setString(6, surname);

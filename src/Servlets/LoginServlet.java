@@ -18,8 +18,8 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        String username = request.getParameter("userid");
-        String pass = request.getParameter("pass");
+        String username = request.getParameter("userid").toLowerCase();
+        String pass = request.getParameter("pass").toLowerCase();
         HttpSession session=request.getSession();                                   //creates a session for the user
 
         try{
