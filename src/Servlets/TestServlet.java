@@ -47,25 +47,31 @@ public class TestServlet extends HttpServlet {
             Date parsedDate = dateFormat.parse(dateFormat.format(date));
             Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
 
-            ArrayList records = new ArrayList();
+            int duration = 1800000; //in milliseconds, 30 minutes
+            Timestamp previous_timestamp = timestamp;
+            timestamp.setTime(timestamp.getTime() + duration);
+
+            ArrayList records = new ArrayList(); ArrayList<String> temp = new ArrayList<String>();
             URL csv = new URL(results);
             BufferedReader br = new BufferedReader(new InputStreamReader(csv.openStream()));
-            String line; int counter = 0;
+            String line;
+            br.mark(0);
             while (true) {
                 line = br.readLine();
+                if(line == null) { br.reset();}
                 String[] values = line.split(",");
-                if(counter == 3) {
-                    //records.add(Arrays.asList(values));
-                    int size = values.length; int i = 0;
-                    while(i<size){
-                        records.add(values[i]);
-                        i++;
-                    }
+                int size = values.length; int i = 0;
+                while(i<size){
+                    temp.add(values[i]);
+                    i++;
+                }
+                if(previous_timestamp.before(Timestamp.valueOf(temp.get(0))) && timestamp.after(Timestamp.valueOf(temp.get(0)))) {
+                    records.add(temp.get(0));
                     System.out.println(records.get(records.size()-1));
                     System.out.println(records.get(0)); //timestamp first element
                     break;
                 }
-                counter++;
+                temp.clear();
             }
             br.close();
             System.out.println(records.get(records.size()-1)); //last element
