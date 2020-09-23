@@ -7,13 +7,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 @WebServlet(name = "TestServlet",value ="/Test")
 public class TestServlet extends HttpServlet {
@@ -40,13 +42,33 @@ public class TestServlet extends HttpServlet {
                 href = res.getString("test_data");
                 results = res.getString("responses");
             }
+            Date date = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yy'T'HH:ss:mm");
+            Date parsedDate = dateFormat.parse(dateFormat.format(date));
+            Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+
+            ArrayList records = new ArrayList();
             URL csv = new URL(results);
-            BufferedReader in =  new BufferedReader(new InputStreamReader(csv.openStream()));
-            String s = null;
-            while ((s= in.readLine())!=null){
-                String[] data = s.split(",");
+            BufferedReader br = new BufferedReader(new InputStreamReader(csv.openStream()));
+            String line; int counter = 0;
+            while (true) {
+                line = br.readLine();
+                String[] values = line.split(",");
+                if(counter == 3) {
+                    //records.add(Arrays.asList(values));
+                    int size = values.length; int i = 0;
+                    while(i<size){
+                        records.add(values[i]);
+                        i++;
+                    }
+                    System.out.println(records.get(records.size()-1));
+                    System.out.println(records.get(0)); //timestamp first element
+                    break;
+                }
+                counter++;
             }
-            in.close();
+            br.close();
+            System.out.println(records.get(records.size()-1)); //last element
 
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 Desktop.getDesktop().browse(new URI(href));
