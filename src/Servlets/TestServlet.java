@@ -48,7 +48,6 @@ public class TestServlet extends HttpServlet {
             String score = "";
             if(request.getParameter("back_to_homepage")!=null){
                 score = request.getParameter("get_score");
-                System.out.println(score);
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/S_Welcome");
                 dispatcher.forward(request, response);
             }
@@ -80,17 +79,17 @@ public class TestServlet extends HttpServlet {
                     "<label  style=\"margin-left: 50px\" id=\"total\" name=\"points\"></label></div></form><div id=\"success\" style=\"display: none;\">\n" +
                     "<hr><label>Succeed</label><p>Well done buddy, you're doing great.</p><p><a href=\"#\" onclick=\"window.open('"+google_form+"');\">Want more tests? Let's give it a try!!!</a></p>\n" +
                     "<form method=\"post\" action=\"/Test\"><input type=\"submit\" class=\"btn btn-success\" name=\"back_to_homepage\" value=\"Back to homepage\">\n" +
-                    "</form><br></div><div id=\"fail\" style=\"display: none;\"><hr><label>Failed</label><p>Sorry buddy, read the theory and try again later.</p>\n" +
+                    "<input type=\"hidden\" id=\"s_score\" name=\"get_score\" value=\"score\"></form><br></div><div id=\"fail\" style=\"display: none;\"><hr><label>Failed</label><p>Sorry buddy, read the theory and try again later.</p>\n" +
                     "<form method=\"post\" action=\"/Test\"><input type=\"submit\" class=\"btn btn-success\" name=\"back_to_homepage\" value=\"Back to homepage\">\n" +
-                    "</form><br></div><input type=\"hidden\" id=\"score\" name=\"get_score\" value=\"score\"></div></div></div></div></div></div><div class=\"col-md-4\"><img src=\"img/test.png\" alt=\"Instructions\" width=\"400\" height=\"600\">\n" +
+                    "<input type=\"hidden\" id=\"f_score\" name=\"get_score\" value=\"score\"></form><br></div></div></div></div></div></div></div><div class=\"col-md-4\"><img src=\"img/test.png\" alt=\"Instructions\" width=\"400\" height=\"600\">\n" +
                     "</div></div></div><script>function displayAnswer() {var i; var score = 0; for (i = 1; i <= 12; i++) { if(i== "+a1+" || i== "+a2+" || i== "+a3+" || i== "+a4+"){\n" +
                     "if (document.getElementById('o'+i).checked) { document.getElementById('b'+i).style.border = '3px solid limegreen';\n" +
                     "document.getElementById('r'+i).style.color = 'limegreen'; document.getElementById('r'+i).innerHTML = ' Correct!'; score++;}\n" +
                     "}else{ if (document.getElementById('o'+i).checked) { document.getElementById('b'+i).style.border = '3px solid red'\n" +
                     "document.getElementById('r'+i).style.color = 'red'; document.getElementById('r'+i).innerHTML = ' Incorrect!';}}}\n" +
                     "$(':radio:not(:checked)').attr('disabled', true); document.getElementById(\"total\").innerHTML = \"Total points \" + score +\"/4\";\n" +
-                    "document.getElementById(\"score\").value = \"\"+score+\"\"; if(score>=3){ document.getElementById('success').style.display = \"initial\"; document.getElementById('fail').style.display = \"none\";\n" +
-                    "}else{ document.getElementById('success').style.display = \"none\"; document.getElementById('fail').style.display = \"initial\";}\n" +
+                    "if(score>=3){ document.getElementById('success').style.display = \"initial\"; document.getElementById('fail').style.display = \"none\"; document.getElementById(\"s_score\").value = \"\"+score+\"\";\n" +
+                    "}else{ document.getElementById('success').style.display = \"none\"; document.getElementById('fail').style.display = \"initial\"; document.getElementById(\"f_score\").value = \"\"+score+\"\";}\n" +
                     "}</script><script src=\"./bootstrap/js/bootstrap.bundle.js\"></script><script src=\"./bootstrap/js/bootstrap.js\"></script></body></html>");
 
         }catch (Exception e){System.out.println(e);}
