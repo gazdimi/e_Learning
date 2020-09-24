@@ -1,8 +1,11 @@
 package Servlets;
 
 import Classes.GoogleFormsMapper;
+import Classes.StudentMapper;
+import Classes.Students_TestsMapper;
 import Classes.TestMapper;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,6 +51,25 @@ public class TestServlet extends HttpServlet {
             String score = "";
             if(request.getParameter("back_to_homepage")!=null){
                 score = request.getParameter("get_score");
+                Students_TestsMapper stu_test = new Students_TestsMapper();
+                StudentMapper stum = new StudentMapper();
+                boolean flag = stu_test.check_for_student_test(userid,S_WelcomeServlet.theory_id);
+
+                if(Integer.parseInt(score)>=3){                                                         //success
+                    int temp = Integer.parseInt(S_WelcomeServlet.theory_id) + 1;
+                    stum.update_info(userid, String.valueOf(temp));
+                    if(flag){ //student-test association exists
+                        stu_test.update_student_test(userid, S_WelcomeServlet.theory_id,score, false);
+                    }else{
+                        stu_test.add_student_test(userid, S_WelcomeServlet.theory_id, score, false);
+                    }
+                }else{                                                                              //fail, add weakness
+                    if (flag){ //student-test association exists
+                        stu_test.update_student_test(userid, S_WelcomeServlet.theory_id,score, true);
+                    }else{
+                        stu_test.add_student_test(userid, S_WelcomeServlet.theory_id, score, true);
+                    }
+                }
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/S_Welcome");
                 dispatcher.forward(request, response);
             }

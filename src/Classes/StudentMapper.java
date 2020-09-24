@@ -65,4 +65,18 @@ public class StudentMapper implements User{
 
         }
     }
+
+    //Update student's info after successful test
+    public void update_info(String student_id, String theory_id) throws SQLException {
+        try{
+            Dbconnector connector = new Dbconnector();
+            PreparedStatement st = connector.connect().prepareStatement("UPDATE students set theory_id=? where students.student_id=?");
+            st.setString(1, theory_id);
+            st.setString(2, student_id);
+            st.executeUpdate();
+        }
+        catch (Exception e){
+            throw new SQLException("Could not update student's info");
+        }
+    }
 }
