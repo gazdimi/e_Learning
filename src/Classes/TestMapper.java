@@ -7,11 +7,11 @@ import java.sql.SQLException;
 public class TestMapper {
 
     //Return test for specific theory_id
-    public ResultSet get_test(String theory_id) throws  SQLException{
+    public ResultSet get_test(int theory_id) throws  SQLException{
         try{
             Dbconnector connector = new Dbconnector();
             PreparedStatement st = connector.connect().prepareStatement("SELECT * FROM tests where tests.test_id = ?;");
-            st.setString(1, theory_id);
+            st.setInt(1, theory_id);
             ResultSet rs = st.executeQuery();
             return  rs;
         }

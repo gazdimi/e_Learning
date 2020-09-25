@@ -56,8 +56,7 @@ public class TestServlet extends HttpServlet {
                 boolean flag = stu_test.check_for_student_test(userid,S_WelcomeServlet.theory_id);
 
                 if(Integer.parseInt(score)>=3){                                                         //success
-                    int temp = Integer.parseInt(S_WelcomeServlet.theory_id) + 1;
-                    stum.update_info(userid, String.valueOf(temp), S_WelcomeServlet.progress + 1.0);
+                    stum.update_info(userid, S_WelcomeServlet.theory_id + 1, S_WelcomeServlet.progress + 1);
                     if(flag){ //student-test association exists
                         stu_test.update_student_test(userid, S_WelcomeServlet.theory_id,score, false);
                     }else{
@@ -75,11 +74,12 @@ public class TestServlet extends HttpServlet {
             }
             TestMapper test = new TestMapper();
             ResultSet res = test.get_test(S_WelcomeServlet.theory_id);
+            int disp_progress = S_WelcomeServlet.progress * 10;
             out.println( S_WelcomeServlet.first_name + " " + S_WelcomeServlet.last_name + "</p><p class=\"card-text\">Current Section: <p>  Multiplication of " + S_WelcomeServlet.theory_id +
-                    "</p></p><p class=\"card-text\">Progress: " + S_WelcomeServlet.progress + "%</p></div></div><form method=\"post\" action=\"/S_Welcome\"><a href=\"contact.html\">Contact</a>" +
+                    "</p></p><p class=\"card-text\">Progress: " + disp_progress + "%</p></div></div><form method=\"post\" action=\"/S_Welcome\"><a href=\"contact.html\">Contact</a>" +
                     "<a href=\"about.html\">About</a><a><input type=\"submit\" value=\"Logout\" name=\"logout\" id=\"logout_form\" style=\"background:none; border-width:0px; padding-left: 0px;\"></a></form></div>" +
-                    "<div class=\"progress\" style=\"margin-top: 2%; height: 32px;\"><div class=\"progress-bar progress-bar-success font-weight-bolder\" role=\"progressbar\" aria-valuenow=\""+S_WelcomeServlet.progress+"\""+
-                    "aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:"+S_WelcomeServlet.progress+"%; font-size: 16px\">Student's progress "+S_WelcomeServlet.progress+"%</div></div>" +
+                    "<div class=\"progress\" style=\"margin-top: 2%; height: 32px;\"><div class=\"progress-bar progress-bar-success font-weight-bolder\" role=\"progressbar\" aria-valuenow=\""+disp_progress+"\""+
+                    "aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:"+disp_progress+"%; font-size: 16px\">Student's progress "+disp_progress+"%</div></div>" +
                     "<div class=\"container\"><div class=\"row\"><div class=\"col-md-8\"><div class=\"container d-flex\" style=\"margin-left: 20%\">\n" +
                     "<div class=\"shadow p-3 mb-5 bg-white rounded\"><div class=\"card text-center \" style=\"width: 45rem;\"><div class=\"card-body\">" +
                     "<h4 class=\"card-title\">It's Testing Time</h4><h6 class=\"card-subtitle mb-2 text-muted\">Choose one answer at a time</h6><div class = \"col\">\n" +

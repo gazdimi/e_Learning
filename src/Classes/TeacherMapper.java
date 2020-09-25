@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class TeacherMapper implements User{
 
-    //Inserts student information to database
+    //Inserts teacher information to database
     public void register(String id,String name,String surname,String password,byte[] salt) throws SQLException {
         try{
             Dbconnector con = new Dbconnector();

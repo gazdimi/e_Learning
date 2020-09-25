@@ -7,7 +7,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
@@ -15,7 +14,7 @@ import java.sql.ResultSet;
 @WebServlet(name = "S_WelcomeServlet",value ="/S_Welcome")
 public class S_WelcomeServlet extends HttpServlet {
 
-    static  String first_name = ""; static String last_name = ""; static String theory_id = ""; static int progress = 0;
+    static  String first_name = ""; static String last_name = ""; static int theory_id = 0; static int progress = 0;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -52,14 +51,15 @@ public class S_WelcomeServlet extends HttpServlet {
             while (info.next()){
                 first_name = info.getString("first_name");
                 last_name = info.getString("last_name");
-                theory_id = info.getString("theory_id");
-                progress = (int) ((info.getDouble("progress")*100)/10);
+                theory_id = info.getInt("theory_id");
+                progress = info.getInt("progress");
             }
+            int disp_progress = progress * 10;
             out.println( first_name + " " + last_name + "</p><p class=\"card-text\">Current Section: <p>  Multiplication of " + theory_id +
-                    "</p></p><p class=\"card-text\">Progress: " + progress + "%</p></div></div><form method=\"post\" action=\"/S_Welcome\"><a href=\"contact.html\">Contact</a>" +
+                    "</p></p><p class=\"card-text\">Progress: " + disp_progress + "%</p></div></div><form method=\"post\" action=\"/S_Welcome\"><a href=\"contact.html\">Contact</a>" +
                     "<a href=\"about.html\">About</a><a><input type=\"submit\" value=\"Logout\" name=\"logout\" id=\"logout_form\" style=\"background:none; border-width:0px; padding-left: 0px;\"></a></form></div>" +
-                    "<div class=\"progress\" style=\"margin-top: 2%; height: 32px;\"><div class=\"progress-bar progress-bar-success font-weight-bolder\" role=\"progressbar\" aria-valuenow=\""+progress+"\""+
-                    "aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:"+progress+"%; font-size: 16px\">Student's progress "+progress+"%</div></div>" +
+                    "<div class=\"progress\" style=\"margin-top: 2%; height: 32px;\"><div class=\"progress-bar progress-bar-success font-weight-bolder\" role=\"progressbar\" aria-valuenow=\""+disp_progress+"\""+
+                    "aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:"+disp_progress+"%; font-size: 16px\">Student's progress "+disp_progress+"%</div></div>" +
                     "<div class=\"container\"><div class=\"row\"><div class=\"col-md-8\"><div class=\"container d-flex\" style=\"margin-left: 20%\">\n" +
                     "<div class=\"shadow p-3 mb-5 bg-white rounded\"><div class=\"card text-center \" style=\"width: 45rem;\"><div class=\"card-body\">\n" +
                     "<h5 class=\"card-title\">Theory</h5><h6 class=\"card-subtitle mb-2 text-muted\">Sections</h6><div class = \"col\">\n" +
@@ -68,20 +68,18 @@ public class S_WelcomeServlet extends HttpServlet {
             TheoryMapper t = new TheoryMapper();
             ResultSet theory = t.get_theory_(theory_id);
             while (theory.next()){
-                if(Integer.parseInt(theory.getString("theory_id")) <= Integer.parseInt(theory_id)){
-                    PrintSections(theory.getString("theory_id"), theory_id, theory.getString("section_data"), out);
-                }
+                PrintSections(theory.getInt("theory_id"), theory_id, theory.getString("section_data"), out);
             }
 
-            out.println("</ul></form><br><form method=\"post\" action=\"/Test\"><input type=\"submit\" value=\"Star the test\" name=\"test\">\n" +
+            out.println("</div></ul></form><br><form method=\"post\" action=\"/Test\"><input type=\"submit\" value=\"Star the test\" name=\"test\">\n" +
                     "</form></div></div></div></div></div></div><div class=\"col-md-4\"><img src=\"./img/bugs_bunny.png\" alt=\"Instructions\"  width=\"400\" height=\"600\">\n" +
                     "</div></div></div><script src=\"./bootstrap/js/bootstrap.bundle.js\"></script>\n" +
-                    "<script src=\"./bootstrap/js/bootstrap.js\"></script>/body></html>");
+                    "<script src=\"./bootstrap/js/bootstrap.js\"></script></body></html>");
             }
         catch(Exception e){ System.out.println(e);}
     }
-    protected void PrintSections(String theory_id, String s_theory_id, String section_data, PrintWriter out) {
-        if(theory_id.equals(s_theory_id)){
+    protected void PrintSections(int theory_id, int s_theory_id, String section_data, PrintWriter out) {
+        if(theory_id==s_theory_id){
             out.println(" <div id=\"heading"+s_theory_id+"\">\n" +
                     "<button style=\"border-bottom: double;\" class=\"list-group-item list-group-item-action\" type=\"button\" data-toggle=\"collapse\" data-target=\"#collapse"+s_theory_id+"\" aria-expanded=\"false\" aria-controls=\"collapse"+s_theory_id+"\">\n" +
                     "   Multiplication of "+s_theory_id+"</button></div><div id=\"collapse"+s_theory_id+"\" class=\"collapse show\" aria-labelledby=\"heading"+s_theory_id+"\" data-parent=\"#accordionExample\">\n" +
@@ -89,7 +87,7 @@ public class S_WelcomeServlet extends HttpServlet {
         }else{
             out.println("<div id=\"heading"+theory_id+"\"><button style=\"border-bottom: double;\" class=\"list-group-item list-group-item-action\"  type=\"button\" data-toggle=\"collapse\" data-target=\"#collapse"+theory_id+"\" aria-expanded=\"false\" aria-controls=\"collapse"+theory_id+"\">\n" +
                     "   Multiplication of "+theory_id+"</button></div><div id=\"collapse"+theory_id+"\" class=\"collapse\" aria-labelledby=\"heading"+theory_id+"\" data-parent=\"#accordionExample\">\n" +
-                    "<br>"+section_data+"</div></div>");
+                    "<br>"+section_data+"</div>");
         }
     }
 

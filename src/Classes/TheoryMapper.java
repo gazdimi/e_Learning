@@ -7,11 +7,11 @@ import java.sql.SQLException;
 public class TheoryMapper {
 
     //Return theory sections that has been unlocked by the student
-    public ResultSet get_theory_(String theory_id) throws SQLException {
+    public ResultSet get_theory_(int theory_id) throws SQLException {
         try {
             Dbconnector connector = new Dbconnector();
             PreparedStatement st = connector.connect().prepareStatement("SELECT * FROM theory WHERE  theory_id <= ?");
-            st.setString(1, theory_id);
+            st.setInt(1, theory_id);
             ResultSet rs = st.executeQuery();
             return rs;
         } catch (Exception e) {

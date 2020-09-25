@@ -14,12 +14,12 @@ public class StudentMapper implements User{
             PreparedStatement st = con.connect().prepareStatement("INSERT INTO students (student_id, teacher_id, theory_id,password,first_name,last_name,salt,progress) VALUES(?,?,?,?,?,?,?,?);");
             st.setString(1, id);
             st.setString(2, null);
-            st.setString(3, "1");
+            st.setInt(3, 1);
             st.setString(4, password);
             st.setString(5, name);
             st.setString(6, surname);
             st.setBytes(7, salt);
-            st.setDouble(8, 0.0);
+            st.setInt(8, 0);
             st.executeUpdate();
             st.close();
             con.disconnect();
@@ -67,12 +67,12 @@ public class StudentMapper implements User{
     }
 
     //Update student's info after successful test
-    public void update_info(String student_id, String theory_id, Double progress) throws SQLException {
+    public void update_info(String student_id, int theory_id, int progress) throws SQLException {
         try{
             Dbconnector connector = new Dbconnector();
             PreparedStatement st = connector.connect().prepareStatement("UPDATE students set theory_id=?, progress=? where students.student_id=?");
-            st.setString(1, theory_id);
-            st.setDouble(2, progress);
+            st.setInt(1, theory_id);
+            st.setInt(2, progress);
             st.setString(3, student_id);
             st.executeUpdate();
         }
