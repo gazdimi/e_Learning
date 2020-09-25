@@ -25,7 +25,7 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
         try{
             //check for student login
             StudentMapper sm = new StudentMapper();
-            if(!sm.login(username,pass).isBlank() ) {                               //if student's credentials are correct
+            if(!(sm.login(username,pass).isBlank())) {                               //if student's credentials are correct
                 session.setAttribute("userid", sm.login(username,pass));
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/S_Welcome");
                 dispatcher.forward(request, response);
@@ -33,7 +33,7 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
                 TeacherMapper tm = new TeacherMapper();
                 if(!tm.login(username,pass).isBlank()) {                            //if teacher's credentials are correct
                     session.setAttribute("userid", tm.login(username,pass));
-                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("T_Welcome");
+                    RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/T_Welcome");
                     dispatcher.forward(request, response);
                 }else{
                     response.sendRedirect("login.html");
@@ -41,6 +41,7 @@ public class LoginServlet extends javax.servlet.http.HttpServlet {
                 }
             }
         }catch (Exception e){
+            System.out.println(e);
             response.sendRedirect("login.html");
             return;
         }

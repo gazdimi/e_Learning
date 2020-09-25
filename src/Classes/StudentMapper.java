@@ -44,7 +44,7 @@ public class StudentMapper implements User{
                     return id;
                 }
             }else{
-                return null;
+                return "";
             }
         }catch(Exception e){
             throw new SQLException("Incorrect credentials");

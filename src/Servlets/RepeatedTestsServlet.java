@@ -1,22 +1,21 @@
 package Servlets;
 
-import Classes.GoogleFormsMapper;
 import Classes.StudentMapper;
 import Classes.Students_TestsMapper;
 import Classes.TestMapper;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.ResultSet;
 
-@WebServlet(name = "TestServlet",value ="/Test")
-public class TestServlet extends HttpServlet {
+@WebServlet(name = "RepeatedTestsServlet",value ="/RepeatedTest")
+public class RepeatedTestsServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -27,64 +26,52 @@ public class TestServlet extends HttpServlet {
         String userid = (String)request.getSession().getAttribute("userid");        //get user id from session
         Students_TestsMapper stu_test = new Students_TestsMapper();
         PrintWriter out = response.getWriter();
-        try{
-            int passed_tests = stu_test.get_number_of_passed_tests(userid);
-            if(passed_tests >= 10){                                                     //if individual tests have been completed, go on with the 2 repeated ones
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/RepeatedTest");
-                dispatcher.forward(request, response);
-                return;
-            }
-            out.print("<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Testing Time</title>\n" +
-                    "<link href=\"./bootstrap/css/bootstrap.css\" rel=\"stylesheet\">\n" +
-                    "<link href=\"./bootstrap/css/bootstrap-grid.css\" rel=\"stylesheet\">\n" +
-                    "<link href=\"./bootstrap/css/bootstrap-reboot.css\" rel=\"stylesheet\">\n" +
-                    "<script src=\"//code.jquery.com/jquery-1.11.0.min.js\"></script>\n" +
-                    "<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css\">\n" +
-                    "<style>.sidenav {height: 100%; width: auto; position: fixed; z-index: 1; top: 0; left: 0; background-color: #042611;\n" +
-                    "overflow-x: hidden; padding-top: 20px; } .sidenav a, #logout_form { padding: 6px 20px 6px 20px; text-decoration: none;\n" +
-                    "font-size: 21px; color: #5f6e62; display: block; } .sidenav a:hover, #logout_form:hover { color: #edede4; } </style> </head>\n" +
-                    "<body style=\"background: #FFEEEE;  /*for old browsers */ background: -webkit-linear-gradient(to right, #DDEFBB, #FFEEEE);  /* Chrome 10-25, Safari 5.1-6 */\n" +
-                    "background: linear-gradient(to right, #DDEFBB, #FFEEEE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\">\n" +
-                    "<div class=\"sidenav\"><div class=\"accordion\" id=\"accordion_menu\"><div id=\"heading_menu\">\n" +
-                    "<a class=\"card-title\" href=\"#about\" data-toggle=\"collapse\" data-target=\"#collapse_menu\" aria-expanded=\"false\" aria-controls=\"collapse_menu\">Profile Info</a>\n" +
-                    "</div><div id=\"collapse_menu\" class=\"collapse container text-white\" style=\"width: fit-content; background-color: #095426\" aria-labelledby=\"heading_menu\" data-parent=\"#accordion_menu\">\n" +
-                    "<p class=\"card-text text-uppercase\"><span class=\"glyphicon glyphicon-user\"></span> ");
 
+        out.print("<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><title>Repeated Test</title>\n" +
+                "<link href=\"./bootstrap/css/bootstrap.css\" rel=\"stylesheet\">\n" +
+                "<link href=\"./bootstrap/css/bootstrap-grid.css\" rel=\"stylesheet\">\n" +
+                "<link href=\"./bootstrap/css/bootstrap-reboot.css\" rel=\"stylesheet\">\n" +
+                "<script src=\"//code.jquery.com/jquery-1.11.0.min.js\"></script>\n" +
+                "<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css\">\n" +
+                "<style>.sidenav {height: 100%; width: auto; position: fixed; z-index: 1; top: 0; left: 0; background-color: #042611;\n" +
+                "overflow-x: hidden; padding-top: 20px; } .sidenav a, #logout_form { padding: 6px 20px 6px 20px; text-decoration: none;\n" +
+                "font-size: 21px; color: #5f6e62; display: block; } .sidenav a:hover, #logout_form:hover { color: #edede4; } </style> </head>\n" +
+                "<body style=\"background: #FFEEEE;  /*for old browsers */ background: -webkit-linear-gradient(to right, #DDEFBB, #FFEEEE);  /* Chrome 10-25, Safari 5.1-6 */\n" +
+                "background: linear-gradient(to right, #DDEFBB, #FFEEEE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */\">\n" +
+                "<div class=\"sidenav\"><div class=\"accordion\" id=\"accordion_menu\"><div id=\"heading_menu\">\n" +
+                "<a class=\"card-title\" href=\"#about\" data-toggle=\"collapse\" data-target=\"#collapse_menu\" aria-expanded=\"false\" aria-controls=\"collapse_menu\">Profile Info</a>\n" +
+                "</div><div id=\"collapse_menu\" class=\"collapse container text-white\" style=\"width: fit-content; background-color: #095426\" aria-labelledby=\"heading_menu\" data-parent=\"#accordion_menu\">\n" +
+                "<p class=\"card-text text-uppercase\"><span class=\"glyphicon glyphicon-user\"></span> ");
+        try{
             if(request.getParameter("logout")!=null) {
                 request.getSession().removeAttribute("userid");
                 request.getSession().invalidate();
                 response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
                 response.sendRedirect("login.html");
             }
+            int repeated_test_id = stu_test.get_next_repeated_test(userid);
             String score = "";
             if(request.getParameter("back_to_homepage")!=null){
                 score = request.getParameter("get_score");
-                StudentMapper stum = new StudentMapper();
-                boolean flag = stu_test.check_for_student_test(userid,S_WelcomeServlet.theory_id);
-
+                boolean flag = stu_test.check_for_student_test(userid,repeated_test_id);
                 if(Integer.parseInt(score)>=3){                                                         //success
-                    if(S_WelcomeServlet.theory_id!= 10) {
-                        stum.update_info(userid, S_WelcomeServlet.theory_id + 1, S_WelcomeServlet.progress + 1);
-                    }else if(S_WelcomeServlet.theory_id==10) {
-                        stum.update_info(userid, S_WelcomeServlet.theory_id, S_WelcomeServlet.progress + 1);
-                    }
                     if (flag) { //student-test association exists
-                        stu_test.update_student_test(userid, S_WelcomeServlet.theory_id, score, false);
+                        stu_test.update_student_test(userid, repeated_test_id, score, false);
                     } else {
-                        stu_test.add_student_test(userid, S_WelcomeServlet.theory_id, score, false);
+                        stu_test.add_student_test(userid, repeated_test_id, score, false);
                     }
                 }else{                                                                              //fail, add weakness
                     if (flag){ //student-test association exists
-                        stu_test.update_student_test(userid, S_WelcomeServlet.theory_id,score, true);
+                        stu_test.update_student_test(userid, repeated_test_id, score, true);
                     }else{
-                        stu_test.add_student_test(userid, S_WelcomeServlet.theory_id, score, true);
+                        stu_test.add_student_test(userid, repeated_test_id, score, true);
                     }
                 }
                 RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/S_Welcome");
                 dispatcher.forward(request, response);
             }
             TestMapper test = new TestMapper();
-            ResultSet res = test.get_test(S_WelcomeServlet.theory_id);
+            ResultSet res = test.get_test(repeated_test_id);
             int disp_progress = S_WelcomeServlet.progress * 10;
             out.println( S_WelcomeServlet.first_name + " " + S_WelcomeServlet.last_name + "</p><p class=\"card-text\">Current Section: <p>  Multiplication of " + S_WelcomeServlet.theory_id +
                     "</p></p><p class=\"card-text\">Progress: " + disp_progress + "%</p></div></div><form method=\"post\" action=\"/S_Welcome\"><a href=\"contact.html\">Contact</a>" +
@@ -106,15 +93,13 @@ public class TestServlet extends HttpServlet {
                 PrintOption(res.getString("q4"), "10", "11", "12",res.getString("o10"),res.getString("o11"),res.getString("o12"), out);
                 a4 = res.getString("a4");
             }
-            GoogleFormsMapper gf = new GoogleFormsMapper();
-            String google_form = gf.get_google_form_test(S_WelcomeServlet.theory_id);
             out.println("</div></ul><div class=\"form-inline\"><button type='button' style=\"margin-left: 150px\"  class=\"btn btn-success\" onclick='displayAnswer()'>Submit</button>\n" +
                     "<label  style=\"margin-left: 50px\" id=\"total\" name=\"points\"></label></div></form><div id=\"success\" style=\"display: none;\">\n" +
-                    "<hr><label>Succeed</label><p>Well done buddy, you're doing great.</p><p><a href=\"#\" onclick=\"window.open('"+google_form+"');\">Want more tests? Let's give it a try!!!</a></p>\n" +
+                    "<hr><label>Succeed Repeated Test</label><p>Well done buddy, you're doing great.</p>\n" +
                     "<form method=\"post\" action=\"/Test\"><input type=\"submit\" class=\"btn btn-success\" name=\"back_to_homepage\" value=\"Back to homepage\">\n" +
                     "<input type=\"hidden\" id=\"s_score\" name=\"get_score\" value=\"score\"></form><br></div><div id=\"fail\" style=\"display: none;\"><hr><label>Failed</label><p>Sorry buddy, read the theory and try again later.</p>\n" +
                     "<form method=\"post\" action=\"/Test\"><input type=\"submit\" class=\"btn btn-success\" name=\"back_to_homepage\" value=\"Back to homepage\">\n" +
-                    "<input type=\"hidden\" id=\"f_score\" name=\"get_score\" value=\"score\"></form><br></div></div></div></div></div></div></div><div class=\"col-md-4\"><img src=\"img/test.png\" alt=\"Instructions\" width=\"400\" height=\"600\">\n" +
+                    "<input type=\"hidden\" id=\"f_score\" name=\"get_score\" value=\"score\"></form><br></div></div></div></div></div></div></div><div class=\"col-md-4\"><img src=\"img/repeated_tests.png\" alt=\"Instructions\" width=\"400\" height=\"600\">\n" +
                     "</div></div></div><script>function displayAnswer() {var i; var score = 0; for (i = 1; i <= 12; i++) { if(i== "+a1+" || i== "+a2+" || i== "+a3+" || i== "+a4+"){\n" +
                     "if (document.getElementById('o'+i).checked) { document.getElementById('b'+i).style.border = '3px solid limegreen';\n" +
                     "document.getElementById('r'+i).style.color = 'limegreen'; document.getElementById('r'+i).innerHTML = ' Correct!'; score++;}\n" +
@@ -124,9 +109,11 @@ public class TestServlet extends HttpServlet {
                     "if(score>=3){ document.getElementById('success').style.display = \"initial\"; document.getElementById('fail').style.display = \"none\"; document.getElementById(\"s_score\").value = \"\"+score+\"\";\n" +
                     "}else{ document.getElementById('success').style.display = \"none\"; document.getElementById('fail').style.display = \"initial\"; document.getElementById(\"f_score\").value = \"\"+score+\"\";}\n" +
                     "}</script><script src=\"./bootstrap/js/bootstrap.bundle.js\"></script><script src=\"./bootstrap/js/bootstrap.js\"></script></body></html>");
-
-        }catch (Exception e){System.out.println(e);}
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
+
     protected void PrintOption(String Q, String i1, String i2, String i3,String o1,String o2,String o3, PrintWriter out){
         out.println("<h4>"+Q+"</h4><div id='b"+i1+"'><label for='o"+i1+"' class=\"h4\">\n" +
                 "<input type='radio' name='option"+i1+"' id='o"+i1+"' style='transform: scale(1.3); margin-right: 10px; vertical-align: middle; margin-top: -2px;' required/>\n" +

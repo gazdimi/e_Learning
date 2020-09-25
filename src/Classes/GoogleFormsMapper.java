@@ -19,4 +19,16 @@ public class GoogleFormsMapper {
 
         }
     }
+
+    public ResultSet get_google_form_results() throws SQLException {
+        try {
+            Dbconnector connector = new Dbconnector();
+            PreparedStatement st = connector.connect().prepareStatement("SELECT number_id,st_progress  FROM google_forms_tests");
+            ResultSet rs = st.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            throw new SQLException("Could not get google form.");
+
+        }
+    }
 }

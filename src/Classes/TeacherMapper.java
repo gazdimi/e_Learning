@@ -40,11 +40,38 @@ public class TeacherMapper implements User{
                     return id;
                 }
             }else{
-                return null;
+                return "";
             }
         }catch(Exception e){
             throw new SQLException("Incorrect credentials");
         }
         return null;
+    }
+
+    //return teacher's information
+    public ResultSet get_info(String userid) throws SQLException{
+        try {
+            Dbconnector connector = new Dbconnector();
+            PreparedStatement st = connector.connect().prepareStatement("SELECT first_name, last_name FROM teachers WHERE teachers.teacher_id = ? ;");
+            st.setString(1, userid);
+            ResultSet rs = st.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            throw new SQLException("Could not get teacher's data.");
+
+        }
+    }
+
+    //Get student's info to display in teacher's homepage
+    public ResultSet get_students() throws SQLException{
+        try {
+            Dbconnector connector = new Dbconnector();
+            PreparedStatement st = connector.connect().prepareStatement("SELECT first_name, last_name, theory_id, progress FROM students ");
+            ResultSet rs = st.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            throw new SQLException("Could not get student's data.");
+
+        }
     }
 }

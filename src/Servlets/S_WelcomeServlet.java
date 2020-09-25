@@ -1,6 +1,7 @@
 package Servlets;
 
 import Classes.StudentMapper;
+import Classes.Students_TestsMapper;
 import Classes.TheoryMapper;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -70,10 +71,11 @@ public class S_WelcomeServlet extends HttpServlet {
             while (theory.next()){
                 PrintSections(theory.getInt("theory_id"), theory_id, theory.getString("section_data"), out);
             }
-
-            out.println("</div></ul></form><br><form method=\"post\" action=\"/Test\"><input type=\"submit\" value=\"Star the test\" name=\"test\">\n" +
+            Students_TestsMapper el = new Students_TestsMapper();
+            boolean flag = el.e_learning_done(userid);
+            out.println("</div></ul></form><br><form method=\"post\" action=\"/Test\"><input type=\"submit\" id=\"start\" value=\"Start the test\" name=\"test\">\n" +
                     "</form></div></div></div></div></div></div><div class=\"col-md-4\"><img src=\"./img/bugs_bunny.png\" alt=\"Instructions\"  width=\"400\" height=\"600\">\n" +
-                    "</div></div></div><script src=\"./bootstrap/js/bootstrap.bundle.js\"></script>\n" +
+                    "</div></div></div><script>document.getElementById(\"start\").disabled = "+flag+";</script><script src=\"./bootstrap/js/bootstrap.bundle.js\"></script>\n" +
                     "<script src=\"./bootstrap/js/bootstrap.js\"></script></body></html>");
             }
         catch(Exception e){ System.out.println(e);}
