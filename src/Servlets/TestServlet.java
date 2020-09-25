@@ -57,7 +57,7 @@ public class TestServlet extends HttpServlet {
 
                 if(Integer.parseInt(score)>=3){                                                         //success
                     int temp = Integer.parseInt(S_WelcomeServlet.theory_id) + 1;
-                    stum.update_info(userid, String.valueOf(temp));
+                    stum.update_info(userid, String.valueOf(temp), S_WelcomeServlet.progress + 1.0);
                     if(flag){ //student-test association exists
                         stu_test.update_student_test(userid, S_WelcomeServlet.theory_id,score, false);
                     }else{

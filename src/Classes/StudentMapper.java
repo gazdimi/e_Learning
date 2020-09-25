@@ -67,12 +67,13 @@ public class StudentMapper implements User{
     }
 
     //Update student's info after successful test
-    public void update_info(String student_id, String theory_id) throws SQLException {
+    public void update_info(String student_id, String theory_id, Double progress) throws SQLException {
         try{
             Dbconnector connector = new Dbconnector();
-            PreparedStatement st = connector.connect().prepareStatement("UPDATE students set theory_id=? where students.student_id=?");
+            PreparedStatement st = connector.connect().prepareStatement("UPDATE students set theory_id=?, progress=? where students.student_id=?");
             st.setString(1, theory_id);
-            st.setString(2, student_id);
+            st.setDouble(2, progress);
+            st.setString(3, student_id);
             st.executeUpdate();
         }
         catch (Exception e){

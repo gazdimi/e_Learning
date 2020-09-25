@@ -68,7 +68,9 @@ public class S_WelcomeServlet extends HttpServlet {
             TheoryMapper t = new TheoryMapper();
             ResultSet theory = t.get_theory_(theory_id);
             while (theory.next()){
-                PrintSections(theory.getString("theory_id"), theory_id, theory.getString("section_data"), out);
+                if(Integer.parseInt(theory.getString("theory_id")) <= Integer.parseInt(theory_id)){
+                    PrintSections(theory.getString("theory_id"), theory_id, theory.getString("section_data"), out);
+                }
             }
 
             out.println("</ul></form><br><form method=\"post\" action=\"/Test\"><input type=\"submit\" value=\"Star the test\" name=\"test\">\n" +
